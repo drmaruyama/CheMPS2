@@ -1,9 +1,11 @@
-![CheMPS2 Logo](../../blob/master/CheMPS2/CheMPS2logo.png?raw=true)
+[![Build Status](https://travis-ci.org/SebWouters/CheMPS2.svg?branch=master)](https://travis-ci.org/SebWouters/CheMPS2)
+
+![CheMPS2 Logo](https://raw.githubusercontent.com/sebwouters/CheMPS2/master/CheMPS2/CheMPS2logo.png?raw=true)
 
 CheMPS2: a spin-adapted implementation of DMRG for ab initio quantum chemistry
 ==============================================================================
 
-Copyright (C) 2013 Sebastian Wouters <sebastianwouters@gmail.com>
+Copyright (C) 2013-2016 Sebastian Wouters <sebastianwouters@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,6 +21,66 @@ You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+Information
+-----------
+
+CheMPS2 is a scientific library which contains a spin-adapted implementation 
+of the density matrix renormalization group (DMRG) for ab initio quantum 
+chemistry. This wavefunction method allows to obtain numerical accuracy in
+active spaces beyond the capabilities of full configuration interaction (FCI),
+and allows to extract the 2-, 3-, and 4-particle reduced density matrices
+(2-, 3- and 4-RDM) of the active space.
+
+For general active spaces up to 40 electrons in 40 orbitals can be handled
+with DMRG, and for one-dimensional active spaces up to 100 electrons in 100
+orbitals. The 2-RDM of these active spaces can also be easily extracted,
+while the 3- and 4-RDM are limited to about 28 orbitals.
+
+When the active space size becomes prohibitively expensive for FCI, DMRG can
+be used to replace the FCI solver in the complete active space self consistent
+field (CASSCF) method and the corresponding complete active space second order
+perturbation theory (CASPT2). The corresponding methods are called DMRG-SCF
+and DMRG-CASPT2, respectively. For DMRG-SCF the active space 2-RDM is required,
+and for DMRG-CASPT2 the active space 4-RDM.
+
+CheMPS2 is designed for high-performance computers, with a hybrid
+parallelization for mixed distributed and shared memory architectures,
+realized with the Message Passing Interface ([MPI](http://www.mpi-forum.org/))
+and the Open Multi-Processing ([OpenMP](http://openmp.org/wp/)) API.
+
+The CheMPS2 library can be interfaced with quantum chemistry codes which
+can handle R(O)HF calculations and molecular orbital matrix elements. This
+has been done for [psi4](http://www.psicode.org) and
+[pyscf](https://github.com/sunqm/pyscf), as described in the
+[user manual](http://sebwouters.github.io/CheMPS2/index.html). Usage of the
+library is illustrated in the [c++](#4-test-libchemps2) and
+[python](#7-test-pychemps2) tests.
+
+The CheMPS2 binary allows to perform DMRG-SCF and DMRG-CASPT2 calculations
+based on input files. Molecular orbital matrix elements should then be
+provided in FCIDUMP format. Usage of the binary is illustrated in the
+[binary](#5-test-the-chemps2-binary) example.
+
+
+User manual
+-----------
+
+Information on CheMPS2 can be found in the following documents:
+
+1. [publications](#how-to-acknowledge-chemps2)
+2. [user manual](http://sebwouters.github.io/CheMPS2/index.html)
+3. [doxygen html output](http://sebwouters.github.io/CheMPS2/doxygen/index.html)
+
+The [user manual](http://sebwouters.github.io/CheMPS2/index.html) contains
+elaborate information on
+
+* the installation of CheMPS2
+* the DMRG, DMRG-SCF, and DMRG-CASPT2 algorithms
+* the symmetries which are exploited in CheMPS2
+* how to generate matrix elements with plugins to [psi4](http://www.psicode.org)
+* how to perform DMRG, DMRG-SCF, and DMRG-CASPT2 calculations
+* the interfaces to [psi4](http://www.psicode.org) and [pyscf](https://github.com/sunqm/pyscf)
+
 
 How to acknowledge CheMPS2
 --------------------------
@@ -27,249 +89,271 @@ To acknowledge CheMPS2, please cite
 
 1. S. Wouters, W. Poelmans, P.W. Ayers and D. Van Neck,
    CheMPS2: a free open-source spin-adapted implementation of the density
-            matrix renormalization group for ab initio quantum chemistry,
-   Submitted to Computer Physics Communications,
-   [arXiv:1312.2415](http://arxiv.org/abs/1312.2415)
+   matrix renormalization group for ab initio quantum chemistry,
+   *Computer Physics Communications* **185** (6), 1501-1514 (2014),
+   [doi:10.1016/j.cpc.2014.01.019](http://dx.doi.org/10.1016/j.cpc.2014.01.019)
 
         @article{CheMPS2cite1,
             author = {Sebastian Wouters and Ward Poelmans and Paul W. Ayers and Dimitri {Van Neck}},
             title = {CheMPS2: a free open-source spin-adapted implementation of the density matrix renormalization group for ab initio quantum chemistry},
-            journal = {ArXiv e-prints},
-            archivePrefix = "arXiv",
-            eprint = {1312.2415},
-            primaryClass = "cond-mat.str-el",
-            year = {2013}
+            journal = {Computer Physics Communications},
+            year = {2014},
+            volume = {185},
+            number = {6},
+            pages = {1501-1514},
+            doi = {10.1016/j.cpc.2014.01.019}
         }
 
-2. S. Wouters, P.A. Limacher, D. Van Neck and P.W. Ayers,
-   Longitudinal static optical properties of hydrogen chains: Finite field
-                extrapolations of matrix product state calculations,
-   The Journal of Chemical Physics 136, 134110 (2012),
-   [doi:10.1063/1.3700087](http://dx.doi.org/10.1063/1.3700087)
+2. S. Wouters and D. Van Neck,
+   The density matrix renormalization group for ab initio quantum chemistry,
+   *European Physical Journal D* **68** (9), 272 (2014),
+   [doi:10.1140/epjd/e2014-50500-1](http://dx.doi.org/10.1140/epjd/e2014-50500-1)
 
         @article{CheMPS2cite2,
-            author = {Sebastian Wouters and Peter A. Limacher and Dimitri {Van Neck} and Paul W. Ayers},
-            title = {Longitudinal static optical properties of hydrogen chains: Finite field extrapolations of matrix product state calculations},
-            journal = {The Journal of Chemical Physics},
-            year = {2012},
-            volume = {136},
-            number = {13}, 
-            pages = {134110},
-            doi = {10.1063/1.3700087} 
+            author = {Sebastian Wouters and Dimitri {Van Neck}},
+            title = {The density matrix renormalization group for ab initio quantum chemistry},
+            journal = {European Physical Journal D},
+            year = {2014},
+            volume = {68},
+            number = {9},
+            pages = {272},
+            doi = {10.1140/epjd/e2014-50500-1}
+        }
+
+3. S. Wouters, T. Bogaerts, P. Van Der Voort, V. Van Speybroeck and D. Van Neck,
+   Communication: DMRG-SCF study of the singlet, triplet, and quintet states of oxo-Mn(Salen),
+   *Journal of Chemical Physics* **140** (24), 241103 (2014),
+   [doi:10.1063/1.4885815](http://dx.doi.org/10.1063/1.4885815)
+   
+        @article{CheMPS2cite3,
+            author = {Sebastian Wouters and Thomas Bogaerts and Pascal {Van Der Voort} and Veronique {Van Speybroeck} and Dimitri {Van Neck}},
+            title = {Communication: DMRG-SCF study of the singlet, triplet, and quintet states of oxo-Mn(Salen)},
+            journal = {Journal of Chemical Physics},
+            year = {2014},
+            volume = {140},
+            number = {24},
+            pages = {241103},
+            doi = {10.1063/1.4885815}
+        }
+
+4. S. Wouters, V. Van Speybroeck and D. Van Neck,
+   DMRG-CASPT2 study of the longitudinal static second hyperpolarizability of all-trans polyenes,
+   *Preprint* (2016),
+   [arXiv:1605.05526](http://arxiv.org/abs/1605.05526)
+
+        @article{CheMPS2cite4,
+            author = {Sebastian Wouters and Veronique {Van Speybroeck} and Dimitri {Van Neck}},
+            title = {DMRG-CASPT2 study of the longitudinal static second hyperpolarizability of all-trans polyenes},
+            journal = {arXiv:1605.05526},
+            year = {2016},
+            url = {http://arxiv.org/abs/1605.05526}
         }
 
 
-List of files in the CheMPS2 library
-------------------------------------
+Installation
+------------
 
-    CheMPS2/CASSCF.cpp
-    CheMPS2/CASSCFdebug.cpp
-    CheMPS2/CASSCFhamiltonianrotation.cpp
-    CheMPS2/CASSCFnewtonraphson.cpp
-    CheMPS2/ConvergenceScheme.cpp
-    CheMPS2/DMRG.cpp
-    CheMPS2/DMRGmpsio.cpp
-    CheMPS2/DMRGoperators.cpp
-    CheMPS2/DMRGtechnics.cpp
-    CheMPS2/FourIndex.cpp
-    CheMPS2/Hamiltonian.cpp
-    CheMPS2/Heff.cpp
-    CheMPS2/HeffDiagonal.cpp
-    CheMPS2/HeffDiagrams1.cpp
-    CheMPS2/HeffDiagrams2.cpp
-    CheMPS2/HeffDiagrams3.cpp
-    CheMPS2/HeffDiagrams4.cpp
-    CheMPS2/HeffDiagrams5.cpp
-    CheMPS2/Irreps.cpp
-    CheMPS2/PrintLicense.cpp
-    CheMPS2/Problem.cpp
-    CheMPS2/Sobject.cpp
-    CheMPS2/SyBookkeeper.cpp
-    CheMPS2/TensorA.cpp
-    CheMPS2/TensorB.cpp
-    CheMPS2/TensorC.cpp
-    CheMPS2/TensorD.cpp
-    CheMPS2/TensorDiag.cpp
-    CheMPS2/TensorF0Cbase.cpp
-    CheMPS2/TensorF0.cpp
-    CheMPS2/TensorF1.cpp
-    CheMPS2/TensorF1Dbase.cpp
-    CheMPS2/TensorL.cpp
-    CheMPS2/TensorO.cpp
-    CheMPS2/TensorQ.cpp
-    CheMPS2/TensorS0Abase.cpp
-    CheMPS2/TensorS0.cpp
-    CheMPS2/TensorS1Bbase.cpp
-    CheMPS2/TensorS1.cpp
-    CheMPS2/TensorSwap.cpp
-    CheMPS2/TensorT.cpp
-    CheMPS2/TensorX.cpp
-    CheMPS2/TwoDM.cpp
-    CheMPS2/TwoIndex.cpp
-    CheMPS2/include/CASSCF.h
-    CheMPS2/include/ConvergenceScheme.h
-    CheMPS2/include/DMRG.h
-    CheMPS2/include/FourIndex.h
-    CheMPS2/include/Gsl.h
-    CheMPS2/include/Hamiltonian.h
-    CheMPS2/include/Heff.h
-    CheMPS2/include/Irreps.h
-    CheMPS2/include/Lapack.h
-    CheMPS2/include/Options.h
-    CheMPS2/include/Problem.h
-    CheMPS2/include/Sobject.h
-    CheMPS2/include/SyBookkeeper.h
-    CheMPS2/include/TensorA.h
-    CheMPS2/include/TensorB.h
-    CheMPS2/include/TensorC.h
-    CheMPS2/include/TensorD.h
-    CheMPS2/include/TensorDiag.h
-    CheMPS2/include/TensorF0Cbase.h
-    CheMPS2/include/TensorF0.h
-    CheMPS2/include/TensorF1Dbase.h
-    CheMPS2/include/TensorF1.h
-    CheMPS2/include/Tensor.h
-    CheMPS2/include/TensorL.h
-    CheMPS2/include/TensorO.h
-    CheMPS2/include/TensorQ.h
-    CheMPS2/include/TensorS0Abase.h
-    CheMPS2/include/TensorS0.h
-    CheMPS2/include/TensorS1Bbase.h
-    CheMPS2/include/TensorS1.h
-    CheMPS2/include/TensorSwap.h
-    CheMPS2/include/TensorT.h
-    CheMPS2/include/TensorX.h
-    CheMPS2/include/TwoDM.h
-    CheMPS2/include/TwoIndex.h
+### 1. Dependencies
 
-Please note that these files are documented with Doxygen-readable comments.
-Search for the section "Build" in README to see how a manual can be
-generated from these comments.
+CheMPS2 can be built with [CMake](http://www.cmake.org/) and depends on
 
+-   BLAS
+-   LAPACK
+-   HDF5 ([Hierarchical Data Format Release 5](http://www.hdfgroup.org/HDF5/))
 
-List of files to perform test runs
-----------------------------------
+It is parallelized for shared memory architectures with the Open
+Multi-Processing ([OpenMP](http://openmp.org/wp/)) API and for
+distributed memory architectures with the Message Passing Interface
+([MPI](http://www.mpi-forum.org/)). A hybrid combination of both
+parallelization strategies is supported.
 
-    tests/test1.cpp
-    tests/test2.cpp
-    tests/test3.cpp
-    tests/test4.cpp
-    tests/test5.cpp
-    tests/test6.cpp
-    tests/matrixelements/CH4_N10_S0_c2v_I0.dat
-    tests/matrixelements/H6_N6_S0_d2h_I0.dat
-    tests/matrixelements/N2_N14_S0_d2h_I0.dat
-    tests/matrixelements/O2_CCPVDZ.dat
+### 2. Download
 
-These test files illustrate how to use the CheMPS2 library.
-They only require a very limited amount of memory (order 10-100 MB).
+It is advised to clone the CheMPS2 git repository from github. In your
+terminal, run:
 
+    > cd /sourcefolder
+    > git clone 'https://github.com/sebwouters/chemps2'
+    > cd chemps2
 
-Matrix elements from Psi4
--------------------------
+That way, future updates and bug fixes can be easily pulled in:
 
-CheMPS2 has a Hamiltonian object which is able to read in matrix elements
-from a plugin to Psi4
-[Psi4, Ab initio quantum chemistry](http://www.psicode.org),
-which works on version psi4.0b5 and higher.
+    > cd /sourcefolder/chemps2
+    > git pull
 
-To make use of this feature, build Psi4 with the plugin option, and then run:
+### 3. Build the chemps2 library and binary
 
-    > psi4 --new-plugin mointegrals
-    > cd mointegrals
+The files
 
-Now, replace the file ```mointegrals.cc``` with either:
+    /sourcefolder/chemps2/CMakeLists.txt
+    /sourcefolder/chemps2/CheMPS2/CMakeLists.txt
+    /sourcefolder/chemps2/tests/CMakeLists.txt
+    /sourcefolder/chemps2/sphinx/CMakeLists.txt
 
-1. ```./mointegrals/mointegrals.cc_PRINT``` to print the matrix elements as
-   text. Examples of output generated with this plugin can be found in
-   ```./tests/matrixelements```
+provide a minimal compilation. In your terminal, run:
 
-2. ```./mointegrals/mointegrals.cc_SAVEHAM``` to store all unique matrix
-   elements (remember that there is eightfold permutation symmetry) in
-   binary form with HDF5. See the Doxygen manual for more information on
-   CheMPS2::Hamiltonian.
-
-For case 2, the ```Makefile``` should be adjusted. Replace
-    ```$(PSILIBS)```
-with
-    ```$(PSILIBS) -L${CheMPS2_BINARY_DIR}/CheMPS2/ -lCheMPS2```
-and replace
-    ```$(CXXINCLUDE)```
-with
-    ```$(CXXINCLUDE) -I${CheMPS2_SOURCE_DIR}/CheMPS2/include/```
-
-To compile the Psi4 plugin, run:
-
-    > make
-
-
-Build
------
-
-### 1. Build CheMPS2 with CMake
-
-CheMPS2 can be build with CMake. The files
-
-    ./CMakeLists.txt
-    ./CheMPS2/CMakeLists.txt
-    ./tests/CMakeLists.txt
-
-provide a minimal compilation. Start in ```./``` and run:
-
+    > cd /sourcefolder/chemps2
     > mkdir build
     > cd build
-    
-CMake generates makefiles based on the user's specifications:
 
-    > CXX=option1 cmake .. -DMKL=option2 -DBUILD_DOCUMENTATION=option3
+CMake generates makefiles based on the user’s specifications:
+
+    > CXX=option1 cmake .. -DMKL=option2 -DCMAKE_INSTALL_PREFIX=/option3 -DWITH_MPI=option4
+
+1.  Option1 is the `c++` compiler; typically `g++`, `icpc`, or `clang++`
+    on Linux. It is advised to use the intel compiler if available.
+2.  Option2 can be `ON` or `OFF` and is used to switch on the intel math
+    kernel library.
+3.  /option3 is the prefix of the installation directory; typically `/usr`
+    or `/usr/local` on Linux. On my computer, libchemps2 is then installed
+    in `/option3/lib/x86_64-linux-gnu`, the headers in
+    `/option3/include/chemps2`, and the binary in
+    `/option3/bin/chemps2`.
+4.  Option4 can be `ON` or `OFF` and is used to switch on the possibility
+    to compile with MPI. Please note that the compiler should then provide
+    `mpi.h`. Option1 should hence be the `mpic++` compiler; typically
+    `mpic++` or `mpiicpc` on Linux. It is advised to use the intel compiler
+    if available.
+
+If one or more of the required libraries are not found, use the command
+
+    > CMAKE_INCLUDE_PATH=option5 CMAKE_LIBRARY_PATH=option6 CXX=option1 cmake .. -DMKL=option2 -DCMAKE_INSTALL_PREFIX=/option3 -DWITH_MPI=option4
+
+instead, where option5 and option6 are respectively the missing
+colon-separated include and library paths:
+
+    CMAKE_INCLUDE_PATH=/my_libs/lib1/include:/my_libs/lib2/include
+    CMAKE_LIBRARY_PATH=/my_libs/lib1/lib:/my_libs/lib2/lib
     
-Option1 is the c++ compiler; typically ```g++``` or ```icpc``` on Linux.
-Option2 can be ```ON``` or ```OFF``` and is used to switch on the
-intel math kernel library.
-Option3 can be ```ON``` or ```OFF``` and is used to switch on doxygen
-documentation.
+For operating systems based on debian, the HDF5 headers are located in
+the folder `/usr/include/hdf5/serial`. If CMake complains about the HDF5
+headers, try to pass it with the option
+`-DHDF5_INCLUDE_DIRS=/usr/include/hdf5/serial`.
 
 To compile, run:
 
     > make
 
+To install, run:
 
-### 2. Testing CheMPS2
+    > make install
 
-To test CheMPS2, start in ```./build```, and run:
+For non-standard installation directories, please remember to append the
+library path to `LD_LIBRARY_PATH` in your `.bashrc`.
 
-    > cd tests/
-    > ./test1
-    > ./test2
-    > ./test3
-    > ./test4
-    > ./test5
-    > ./test6
+### 4. Test libchemps2
 
-The tests should end with a line stating whether or not they succeeded.
-They only require a very limited amount of memory (order 10-100 MB).
+To test libchemps2 for compilation **without MPI**, run:
 
-### 3. Doxygen documentation
+    > cd /sourcefolder/chemps2/build
+    > make test
 
-To build and view the Doxygen manual, the documentation flag should have
-been on: ```-DBUILD_DOCUMENTATION=ON```. Start in ```./build``` and run:
+To test libchemps2 for compilation **with MPI**, run:
+    
+    > cd /sourcefolder/chemps2/build/tests
+    > OMP_NUM_THREADS=YYY mpirun -np ZZZ ./test1
+    > OMP_NUM_THREADS=YYY mpirun -np ZZZ ./test2
+    ...
 
-    > make doc
-    > cd LaTeX-documents
-    > make
-    > evince refman.pdf &
-    > cd ../html
-    > firefox index.html &
+`YYY` specifies the number of threads per process and `ZZZ` the number of
+processes. Note that the tests are too small to see (near) linear scaling
+with the number of cores, although improvement should still be noticeable.
+
+### 5. Test the chemps2 binary
+
+To test the chemps2 binary for compilation **without MPI**, run:
+
+    > man /sourcefolder/chemps2/chemps2.1
+    > cd /sourcefolder/chemps2/build/CheMPS2
+    > ./chemps2 --help
+    > cp /sourcefolder/chemps2/tests/test14.input .
+    > sed -i "s/path\/to/sourcefolder\/chemps2\/tests\/matrixelements/" test14.input
+    > cat test14.input
+    > ./chemps2 --file=test14.input
+    
+Note that when you use the CASPT2 checkpoint, and want to restart a
+calculation at a later point, you should
+
+ 1. switch the option `SCF_ACTIVE_SPACE` to `I`
+ 2. remove the `CheMPS2_DIIS.h5` checkpoint
+
+in order to ensure that **exactly** the same orbitals are used in the
+different runs.
+    
+To test the chemps2 binary for compilation **with MPI**, prepend the binary with:
+
+    > OMP_NUM_THREADS=YYY mpirun -np ZZZ ./chemps2 --file=test14.input
+
+### 6. Build PyCheMPS2
+
+PyCheMPS2 is a python interface to libchemps2, for
+compilation **without MPI**. It can be built with
+[Cython](http://cython.org/). The installation is independent of
+CMake and assumes that you have installed the CheMPS2 library with
+`make install`. For non-standard installation directories of CheMPS2,
+please remember to append the library path to `LD_LIBRARY_PATH` in
+your `.bashrc`. In addition, the include path should be appended
+to `CPATH`:
+
+    > export CPATH=${CPATH}:/option3/include
+
+where `/option3` is the option provided to CMake with
+`-DCMAKE_INSTALL_PREFIX=/option3` above. For operating systems based
+on debian, the HDF5 headers are located in the folder
+`/usr/include/hdf5/serial`. If it was explicitly passed to CMake, it
+should also be appended to `CPATH`:
+
+    > export CPATH=${CPATH}:/option3/include:/usr/include/hdf5/serial
+
+The python wrapper can be installed with:
+
+    > cd /sourcefolder/chemps2/PyCheMPS2
+    > python setup.py build_ext -L ${LD_LIBRARY_PATH}
+    > python setup.py install --prefix=/option3
+
+On my machine, the python wrapper is installed to the folder
+`/option3/lib/python2.7/site-packages`, but the folder `lib` and
+the distribution of python can vary.
+
+Compilation of PyCheMPS2 occurs by linking to the `c++` library in the
+installation directory. The installation of PyCheMPS2 will fail if that
+library is not properly installed. If you have pulled a newer version of
+CheMPS2, please remember to reinstall the `c++` library first, before
+reinstalling PyCheMPS2!
 
 
-User manual
------------
+### 7. Test PyCheMPS2
 
-Doxygen output can be generated, see the section "Build" in README, or
-the [Doxygen html output](http://sebwouters.github.io/CheMPS2/index.html).
+When libchemps2 has been compiled **without MPI**, PyCheMPS2 can be tested
+by running (remember that the python site-packages folder can vary):
 
-For a more concise overview of the concepts and ideas used in CheMPS2,
-please read the code release paper "CheMPS2: a free open-source spin-adapted
-implementation of the density matrix renormalization group for ab initio
-quantum chemistry", one of the references in CITATIONS.
+    > cd /sourcefolder/chemps2/PyCheMPS2/tests
+    > export PYTHONPATH=${PYTHONPATH}:/option3/lib/python2.7/site-packages
+    > python test1.py
+    > python test2.py
+    ...
+
+If you compiled the `c++` library with `-DMKL=ON`, you might get the error
+
+    Intel MKL FATAL ERROR: Cannot load libmkl_avx.so or libmkl_def.so.
+
+This issue of using Intel’s MKL inside python is known and reported. To
+get the python tests to run, you can set the variable `LD_PRELOAD` in
+order to preload libmkl\_rt.so. On my system, this is done with
+
+    > export LD_PRELOAD=/opt/intel/mkl/lib/intel64/libmkl_rt.so
+
+The python tests do exactly the same thing as the `c++` tests above, and
+illustrate the usage of the python interface to libchemps2. The tests
+should end with a line stating whether or not they succeeded. Note that the
+tests are too small to see (near) linear scaling with the number of cores,
+although improvement should still be noticeable.
+
+
+List of files in CheMPS2
+------------------------
+
+The files in the CheMPS2 library, as well as the files required to perform
+test runs, can be found in [FILES.md](FILES.md).
+
 
